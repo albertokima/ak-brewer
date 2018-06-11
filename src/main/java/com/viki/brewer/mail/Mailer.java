@@ -73,7 +73,7 @@ public class Mailer {
 				
 				MimeMessage mimeMessage = mailSender.createMimeMessage();
 				MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8");
-				message.setFrom("hiperjedi@gmail.com");
+				message.setFrom("username@gmail.com");
 				message.setTo(emailCliente);
 				message.setSubject(String.format("Brewer - Venda n° %d", venda.getCodigo()));
 				message.setText(email, true);
