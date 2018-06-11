@@ -24,7 +24,7 @@ import com.amazonaws.services.s3.model.lifecycle.LifecycleTagPredicate;
 @PropertySource(value = { "file://${HOME}/.brewer-s3.properties" }, ignoreResourceNotFound = true)
 public class S3Config {
 	
-	private static final String BUCKET = "ak-brewer-fotos";
+	private static final String BUCKET = "brewer-fotos";
 	
 	@Autowired
 	private Environment env;
