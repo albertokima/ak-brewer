@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+<meta charset="UTF-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<title>Brewer</title>
+
+<link rel="stylesheet" type="text/css" th:href="@{/layout/stylesheets/vendors.min.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{/layout/stylesheets/algaworks.min.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{/stylesheets/brewer.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{/stylesheets/vendors/bootstrap-datepicker3.standalone.min.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{/stylesheets/vendors/bootstrap-clockpicker.min.css}" />
+
+<link rel="shortcut icon" th:href="@{/images/favicon.png}" />
+
+</head>
+<body>
+	<input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
+	<input type="hidden" name="_csrf_header" th:value="${_csrf.headerName}"/>
+
+	<div class="aw-layout-loading  js-loading-overlay">
+		<div class="aw-layout-loading__container">
+			<span class="aw-balls-spinner">Carregando...</span>
+		</div>
+	</div>
+
+	<div class="aw-layout-page">
+		<div th:replace="layout/fragments/BarraNavegacao :: navbar"></div>
+
+		<div th:replace="layout/fragments/MenuLateral :: sidebar"></div>
+
+		<section class="aw-layout-content  js-content" layout:fragment="conteudo"></section>
+
+		<div th:replace="layout/fragments/Rodape :: footer"></div>
+	</div>
+
+	<div th:replace="layout/fragments/Pesquisa :: search"></div>
+
+	<script th:src="@{/layout/javascripts/vendors.min.js}"></script>
+	<script th:src="@{/layout/javascripts/algaworks.min.js}"></script>
+	<script th:src="@{/javascripts/vendors/jquery.maskMoney.min.js}"></script>
+	<script th:src="@{/javascripts/vendors/jquery.masknumber.js}"></script>
+	<script th:src="@{/javascripts/vendors/jquery.mask.min.js}"></script>
+	<script th:src="@{/javascripts/vendors/bootstrap-datepicker.min.js}"></script>
+	<script th:src="@{/javascripts/vendors/bootstrap-datepicker.pt-BR.min.js}"></script>
+	<script th:src="@{/javascripts/vendors/bootstrap-clockpicker.min.js}"></script>
+	<script th:src="@{/javascripts/vendors/numeral.min.js}"></script>
+	<script th:src="@{/javascripts/vendors/pt-br.min.js}"></script>
+	<script th:src="@{/javascripts/vendors/jquery.mobile-events.min.js}"></script>
+
+	<script th:src="@{/javascripts/brewer.js}"></script>
+	<script th:src="@{/javascripts/brewer.dialogo-exclusao.js}"></script>
+
+	<th:block layout:fragment="javascript-extra"></th:block>
+
+</body>
+</html>

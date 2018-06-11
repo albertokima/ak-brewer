@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/LayoutPadrao}"
+	xmlns:brewer="http://br.brewer.com" xmlns:data="http://www.thymeleaf.org/extras/data">
+
+<head>
+	<title>Pesquisa de Estilos</title>
+</head>
+<body>
+	<section layout:fragment="conteudo">
+		<div class="page-header">
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-xs-10 col-sm-10">
+						<h1>Pesquisa de Estilos</h1>
+					</div>
+					<div class="col-xs-2 col-sm-2">
+						<div class="aw-page-header-controls">
+							<a class="btn btn-default" th:href="@{/estilos/novo}">
+								<i class="glyphicon glyphicon-plus-sign"></i>
+								<span class="hidden-xs">Cadastrar</span>
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="container-fluid">
+			<form method="get" th:object="${estiloFilter}">
+				<div class="row">
+					<div class="col-sm-12 form-group">
+						<label for="nome">Nome</label>
+						<input type="text" class="form-control" id="nome" autofocus="autofocus" th:field="*{nome}">
+					</div>
+				</div>
+
+				<button type="submit" class="btn  btn-primary">Pesquisar</button>
+			</form>
+
+			<div class="table-responsive  bw-tabela-simples">
+				<table class="table table-striped table-hover">
+					<thead>
+						<tr class=info>
+							<th class="table-col-codigo">
+								<brewer:order page="${pagina}" field="codigo" text="Código"/>
+							</th>
+							<th>
+								<brewer:order page="${pagina}" field="nome" text="Nome"/>
+							</th>
+							<th class="table-col-acoes"></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="estilo : ${pagina.conteudo}">
+							<td class="text-right" th:text="${estilo.codigo}">1</td>							
+							<td th:text="${estilo.nome}">Lager</td>							
+							<td class="text-center">
+								<a class="btn btn-link btn-xs js-tooltip" title="Editar"
+									th:href="@{/estilos/{codigo}(codigo=${estilo.codigo})}"> 
+									<i class="glyphicon glyphicon-pencil"></i>
+								</a>
+								<a class="btn btn-link btn-xs js-tooltip js-exclusao-btn" title="Excluir" href="#"
+									data:url="@{/estilos/{codigo}(codigo=${estilo.codigo})}"
+									data:objeto="${estilo.nome}">
+									<i class="glyphicon glyphicon-remove"></i>
+								</a>								
+							</td>							
+						</tr>
+						<tr th:if="${pagina.vazia}">
+							<td colspan="3">Nenhum registro encontrado</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			
+			<brewer:navigation page="${pagina}" type="pager"/>
+			
+		</div>
+	</section>
+</body>
+</html>

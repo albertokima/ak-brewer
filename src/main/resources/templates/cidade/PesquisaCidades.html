@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/LayoutPadrao}"
+	xmlns:brewer="http://br.brewer.com" xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+	xmlns:data="http://www.thymeleaf.org/extras/data">
+
+<head>
+	<title>Pesquisa de Cidades</title>
+</head>
+<body>
+	<section layout:fragment="conteudo">
+		<div class="page-header">
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-xs-10 col-sm-10">
+						<h1>Pesquisa de Cidades</h1>
+					</div>
+					<div class="col-xs-2 col-sm-2" sec:authorize-url="/cidades/novo">
+						<div class="aw-page-header-controls">
+							<a class="btn btn-default" th:href="@{/cidades/novo}">
+								<i class="glyphicon glyphicon-plus-sign"></i>
+								<span class="hidden-xs">Cadastrar</span>
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="container-fluid">
+			<form method="get" th:object="${cidadeFilter}">
+				<div class="row">
+					<div class="col-sm-4 form-group">
+						<label for="estado">Estado</label>
+						<select id="estado" class="form-control" th:field="*{estado}">
+							<option value="">Todos os estados</option>
+							<option th:each="estado: ${estados}" th:value="${estado.codigo}"
+								th:text="${estado.siglaNome}">PR - Paraná</option>
+						</select>
+					</div>
+
+					<div class="col-sm-8 form-group">
+						<label for="nome">Nome</label>
+						<input type="text" class="form-control" id="nome" th:field="*{nomeCidade}">
+					</div>
+				</div>
+
+				<button type="submit" class="btn  btn-primary">Pesquisar</button>
+			</form>
+
+			<div class="table-responsive  bw-tabela-simples">
+				<table class="table table-striped table-hover">
+					<thead>
+						<tr class="info">
+							<th>
+								<brewer:order page="${pagina}" field="nome" text="Nome"/>
+							</th>
+							<th class="table-cidades-col-estado">
+								<brewer:order page="${pagina}" field="estado.nome" text="Estado"/>
+							</th>
+							<th class="table-col-acoes" sec:authorize="hasRole('ROLE_CADASTRAR_CIDADE')"></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="cidade : ${pagina.conteudo}">
+							<td th:text="${cidade.nome}">Curitiba</td>
+							<td th:text="${cidade.estado.nome}">Paraná</td>
+							<td class="text-center" sec:authorize="hasRole('ROLE_CADASTRAR_CIDADE')">
+								<a class="btn btn-link btn-xs js-tooltip" title="Editar"
+									th:href="@{/cidades/{codigo}(codigo=${cidade.codigo})}">
+									<i class="glyphicon glyphicon-pencil"></i>
+								</a>
+								<a class="btn btn-link btn-xs js-tooltip js-exclusao-btn" title="Excluir"
+									data:url="@{/cidades/{codigo}(codigo=${cidade.codigo})}"
+									data:objeto="${cidade.nome}">
+									<i class="glyphicon glyphicon-remove"></i>
+								</a>								
+							</td>							
+						</tr>
+						<tr th:if="${pagina.vazia}">
+							<td colspan="3">Nenhum registro encontrado</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			
+			<brewer:navigation page="${pagina}" type="pagination"/>
+			
+		</div>
+	</section>
+</body>
+</html>

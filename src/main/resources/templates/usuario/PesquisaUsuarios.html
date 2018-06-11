@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/LayoutPadrao}"
+	xmlns:brewer="http://br.brewer.com" xmlns:data="http://www.thymeleaf.org/extras/data">
+
+<head>
+	<title>Pesquisa de Usuários</title>
+</head>
+<body>
+	<section layout:fragment="conteudo">
+		<div class="page-header">
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-xs-10 col-sm-10">
+						<h1>Pesquisa de Usuários</h1>
+					</div>
+					<div class="col-xs-2 col-sm-2">
+						<div class="aw-page-header-controls">
+							<a class="btn btn-default" th:href="@{/usuarios/novo}">
+								<i class="glyphicon glyphicon-plus-sign"></i>
+								<span class="hidden-xs">Cadastrar</span>
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="container-fluid">
+			<form method="get" th:object="${usuarioFilter}">
+				<div class="row">
+					<div class="col-sm-4 form-group">
+						<label for="nome">Nome</label>
+						<input type="text" class="form-control" id="nome" autofocus="autofocus" th:field="*{nome}">
+					</div>
+					<div class="col-sm-4 form-group">
+						<label for="email">E-mail</label>
+						<input type="text" class="form-control" id="email" th:field="*{email}">
+					</div>
+					<div class="col-sm-4 form-group">
+						<label>Status</label>
+						<div>
+	  						<div class="radio radio-inline">
+		    					<input th:id="statusAtivo" type="radio" th:value="TRUE" th:field="*{status}"/>
+		    					<label th:for="statusAtivo">Ativo</label>
+	    					</div>
+	  						<div class="radio radio-inline">
+		    					<input th:id="statusInativo" type="radio" th:value="FALSE" th:field="*{status}"/>
+		    					<label th:for="statusInativo">Inativo</label>
+	    					</div>
+		  					<div class="radio radio-inline">
+			    				<input id="statusTodos" type="radio" th:checked="*{status} == null" value="" name="status"/>
+			    				<label for="statusTodos" >Todos</label>
+		    				</div>
+						</div>
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label for="grupos">Grupos</label>
+					<div>
+						<th:block th:each="grupo : ${grupos}">
+							<div class="checkbox checkbox-inline">
+								<input type="checkbox" th:value="${grupo.codigo}" th:field="*{grupos}"/>
+								<label th:for="${#ids.prev('grupos')}" th:text="${grupo.nome}">Administrador</label>
+							</div>
+						</th:block>
+					</div>
+				</div>
+
+				<button type="submit" class="btn  btn-primary">Pesquisar</button>
+			</form>
+
+			<div class="aw-datatable-toolbar">
+				<button class="btn btn-default  btn-xs  js-status-btn" data:status="ATIVAR"
+					data:url="@{/usuarios/status}" disabled>
+					<span>Ativar</span>
+				</button>
+				
+				<button class="btn btn-default  btn-xs  js-status-btn" data:status="DESATIVAR"
+					data:url="@{/usuarios/status}" disabled>
+					<span>Desativar</span>
+				</button>
+			</div>
+		
+			<div class="table-responsive  bw-tabela-simples">
+				<table class="table table-striped table-hover">
+					<thead>
+						<tr class=info>
+		            		<th class="table-usuarios-col-checkbox">
+		            			<div class="checkbox  aw-checkbox-no-margin">
+		            				<input type="checkbox" class="js-selecao-todos"/>
+		            				<label></label>
+		            			</div>
+		            		</th>
+							<th>
+								<brewer:order page="${pagina}" field="nome" text="Nome"/>
+							</th>
+							<th>E-mail</th>
+							<th>Grupos</th>
+							<th class="table-usuarios-col-status">Status</th>
+							<th class="table-col-acoes"></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="usuario : ${pagina.conteudo}">
+							<td>
+								<div class="checkbox  aw-checkbox-no-margin" th:if="${#authentication.name != usuario.email}">
+		            				<input type="checkbox" class="js-selecao" data:codigo="${usuario.codigo}">
+		            				<label></label>
+		            			</div>
+							</td>
+							<td th:text="${usuario.nome}">Pedro</td>
+							<td th:text="${usuario.email}">pedro@brewer.com</td>
+							<td>
+								<span th:each="grupo: ${usuario.grupos}" th:text="|${grupo.nome}${grupoStat.Last?'':', '}|">Administrador</span>
+							</td>
+							<td>
+								<span class="bw-label-pill label" th:text="${usuario.status}" 
+									th:classappend="${usuario.ativo} ? label-success : label-danger">
+								</span>
+							</td>
+							<td class="text-center">
+								<a class="btn btn-link btn-xs js-tooltip" title="Editar" th:href="@{/usuarios/{codigo}(codigo=${usuario.codigo})}"> 
+									<i class="glyphicon glyphicon-pencil"></i>
+								</a>
+								<!-- 
+								<a class="btn btn-link btn-xs js-tooltip" title="Excluir">
+									<i class="glyphicon glyphicon-remove"></i>
+								</a>
+								 -->								
+							</td>							
+						</tr>
+						<tr th:if="${pagina.vazia}">
+							<td colspan="6">Nenhum registro encontrado</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			
+			<brewer:navigation page="${pagina}" type="pager"/>
+			
+		</div>
+	</section>
+	
+	<th:block layout:fragment="javascript-extra">
+		<script th:src="@{/javascripts/multiselecao.js}"></script>
+	</th:block>
+	
+</body>
+</html>

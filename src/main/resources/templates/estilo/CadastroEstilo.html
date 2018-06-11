@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/LayoutPadrao}"
+	xmlns:brewer="http://br.brewer.com">
+<head>
+	<title>Cadastro de Estilo</title>
+
+	<link rel="stylesheet" type="text/css" th:href="@{/stylesheets/vendors/bootstrap-switch.min.css}" />
+</head>
+
+<body>
+	<section layout:fragment="conteudo">
+		<div class="page-header">
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-xs-10 col-sm-10">
+						<h1 th:if="${estilo.novo}">Cadastro de Estilo</h1>
+						<h1 th:unless="${estilo.novo}">Edição de Estilo - Código: [[${{estilo.codigo}}]]</h1>
+					</div>
+					<div class="col-xs-2 col-sm-2">
+						<div class="aw-page-header-controls">
+							<a class="btn btn-default" th:href="@{/estilos}">
+								<i class="glyphicon glyphicon-search"></i>
+								<span class="hidden-xs">Pesquisar</span>
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="container-fluid">
+			<form method="post" th:object="${estilo}" class="form-vertical" 
+				th:action="${estilo.novo} ? @{/estilos/novo} : @{/estilos/{codigo}(codigo=${estilo.codigo})}">
+				<brewer:message/>
+				
+				<input type="hidden" th:field="*{codigo}"/>
+				<div class="form-group bw-required" brewer:classforerror="nome">
+					<label for="nome" class="control-label">Nome</label>
+					<input id="nome" type="text" class="form-control" autofocus="autofocus" th:field="*{nome}">
+				</div>
+
+				<button class="btn  btn-primary" type="submit">Salvar</button>
+
+			</form>
+		</div>
+
+	</section>
+	
+</body>
+</html>

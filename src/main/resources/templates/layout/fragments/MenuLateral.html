@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+	xmlns:brewer="http://br.brewer.com">
+<body>
+<aside class="aw-layout-sidebar  js-sidebar" th:fragment="sidebar">
+	<div class="aw-layout-sidebar__content">
+		<nav class="aw-menu  js-menu">
+			<ul class="aw-menu__list">
+
+				<li class="aw-menu__item" brewer:menu="@{/}">
+					<a th:href="@{/}">
+						<i class="fa  fa-fw  fa-dashboard"></i>
+						<span>Dashboard</span>
+					</a>
+				</li>
+
+				<li class="aw-menu__item">
+					<a href="#">
+						<i class="fa  fa-fw  fa-shopping-cart"></i>
+						<span>Venda</span>
+						<i class="aw-menu__navigation-icon  fa"></i>
+					</a>
+
+					<ul class="aw-menu__list  aw-menu__list--sublist">
+						<li class="aw-menu__item  aw-menu__item--link" brewer:menu="@{/vendas.+}">
+							<a th:href="@{/vendas/novo}"><i class="fa fa-cart-plus"></i>Cadastro</a>
+						</li>
+						<li class="aw-menu__item  aw-menu__item--link" brewer:menu="@{/vendas}">
+							<a th:href="@{/vendas}"><i class="fa fa-search"></i>Pesquisa</a>
+						</li>
+					</ul>
+				</li>
+
+				<li class="aw-menu__item">
+					<a href="#">
+						<i class="fa  fa-fw  fa-truck"></i>
+						<span>Estoque</span>
+						<i class="aw-menu__navigation-icon  fa"></i>
+					</a>
+
+					<ul class="aw-menu__list  aw-menu__list--sublist">
+						<li class="aw-menu__item  aw-menu__item--link" brewer:menu="@{/estilos.*}">
+							<a th:href="@{/estilos}"><i class="fa fa-asterisk"></i>Estilos</a>
+						</li>
+						<li class="aw-menu__item  aw-menu__item--link" brewer:menu="@{/cervejas.*}">
+							<a th:href="@{/cervejas}"><i class="fa fa-beer"></i>Cervejas</a>
+						</li>
+					</ul>
+				</li>
+
+				<li class="aw-menu__item">
+					<a href="#">
+						<i class="fa  fa-fw  fa-book"></i>
+						<span>Cadastros</span>
+						<i class="aw-menu__navigation-icon  fa"></i>
+					</a>
+
+					<ul class="aw-menu__list  aw-menu__list--sublist">
+						<li class="aw-menu__item  aw-menu__item--link" brewer:menu="@{/cidades.*}">
+							<a th:href="@{/cidades}"><i class="fa fa-building"></i>Cidades</a>
+						</li>
+						<li class="aw-menu__item  aw-menu__item--link" brewer:menu="@{/clientes.*}">
+							<a th:href="@{/clientes}"><i class="fa fa-bookmark"></i>Clientes</a>
+						</li>
+						<li class="aw-menu__item  aw-menu__item--link" brewer:menu="@{/usuarios.*}"
+							th:if="${#authentication.principal.usuario.nome == 'Administrador'}">
+							<a th:href="@{/usuarios}"><i class="fa fa-user"></i>Usuários</a>
+						</li>
+					</ul>
+				</li>
+
+				<li class="aw-menu__item">
+					<a href="#">
+						<i class="fa  fa-fw  fa-files-o"></i>
+						<span>Relatórios</span>
+						<i class="aw-menu__navigation-icon  fa"></i>
+					</a>
+
+					<ul class="aw-menu__list  aw-menu__list--sublist">
+						<li class="aw-menu__item  aw-menu__item--link" brewer:menu="@{/relatorios.*}">
+							<a th:href="@{/relatorios/vendasEmitidas}">
+								<i class="fa fa-file-pdf-o"></i>Vendas Emitidas
+							</a>
+						</li>
+					</ul>
+				</li>
+
+			</ul>
+		</nav>
+	</div>
+</aside>
+</body>
+</html>

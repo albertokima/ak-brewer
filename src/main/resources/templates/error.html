@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/LayoutSimples}">
+
+<th:block layout:fragment="conteudo">
+	<th:block th:if="${status == 400} or ${status == 403} or ${status == 404} or ${status == 405} or ${status == 500}">
+		<th:block th:replace="|fragments/errors/${status}|"/>
+	</th:block>
+	<th:block th:unless="${status == 400} or ${status == 403} or ${status == 404} or ${status == 405} or ${status == 500}">
+		<div class="aw-error-panel">
+			<h1 class="aw-error-panel__code">
+				<i class="fa  fa-bug"></i>
+				[[${{status}}]]
+			</h1>
+	
+			<h2 class="aw-error-panel__title">Erro inesperado</h2>
+	
+			<div class="aw-error-panel__description">
+				Desculpe, o requisição não pôde ser processada.	
+				Entre em contato com a gente se precisar de ajuda.
+				<br />
+				<br />
+				<a th:href="@{/}" class="btn  btn-primary">Ir para página inicial</a>
+			</div>
+		</div>
+	</th:block>	
+</th:block>
+
+
+</html>

@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<th:block th:fragment="order (pagina, campo, texto)">
+	<a th:href="${pagina.urlOrdenada(campo)}" style="text-decoration: none" 
+			th:remove="${pagina.vazia} ? tag">
+		<span th:text="${texto}"></span>
+		<span class="dropup" th:remove="${pagina.descendente(campo)} ? tag">
+			<span class="caret" th:remove="${pagina.semOrdenacao(campo)} ? tag"></span>
+		</span>
+		<span th:if="${pagina.aleatoria(campo)}">
+			<span class="fa fa-sort" style="margin-left: 4px"></span>
+		</span>
+	</a>
+</th:block>
+
+</html>

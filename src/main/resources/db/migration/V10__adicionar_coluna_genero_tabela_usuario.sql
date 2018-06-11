@@ -1,0 +1,1 @@
+alter table usuario add column genero character varying(1) NOT NULL default 'O';

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings xmlns="http://xmlns.jcp.org/xml/ns/persistence/orm"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence/orm http://xmlns.jcp.org/xml/ns/persistence/orm_2_1.xsd"
+	version="2.1">
+	
+	<named-native-query name="Vendas.totalPorMes" result-set-mapping="totalPorMesMapping">
+		<query>
+			select to_char(data_criacao, 'YYYYMM') ordem, 
+			       to_char(data_criacao, 'TMMON/YYYY') mes, 
+			       sum(case when status='EMITIDA' then 1 else 0 end) total_emitida,
+			       sum(case when status='CANCELADA' then 1 else 0 end) total_cancelada
+			from venda
+			where data_criacao > now() - interval '6' month
+			  and status in ('EMITIDA','CANCELADA')
+			group by 1, 2
+			order by 1 desc
+	    </query>
+	</named-native-query>
+	
+	<named-native-query name="Vendas.totalPorOrigem" result-set-mapping="totalPorOrigemMapping">
+		<query>
+			select to_char(v.data_criacao, 'YYYYMM') ordem,
+				   to_char(v.data_criacao, 'TMMON/YYYY') mes,
+			       sum(case
+				       when c.origem = 'NACIONAL' then i.quantidade
+				       else 0
+				   end) total_nacional,
+			       sum(case
+				       when c.origem = 'INTERNACIONAL' then i.quantidade
+				       else 0
+				   end) total_internacional
+			from item_venda i,
+			     venda v,
+			     cerveja c
+			where i.codigo_venda = v.codigo
+			  and i.codigo_cerveja = c.codigo
+			  and v.data_criacao > now() - interval '6' month
+			  and v.status = 'EMITIDA'
+			group by 1, 2
+			order by 1 desc
+		</query>
+	</named-native-query>	
+	
+	<sql-result-set-mapping name="totalPorMesMapping">
+		<constructor-result target-class="com.viki.brewer.dto.VendaMes">
+			<column name="ordem" class="java.lang.Integer"/>
+			<column name="mes" class="java.lang.String"/>
+			<column name="total_emitida" class="java.lang.Integer"/>
+			<column name="total_cancelada" class="java.lang.Integer"/>
+		</constructor-result>
+	</sql-result-set-mapping>
+
+	<sql-result-set-mapping name="totalPorOrigemMapping">
+		<constructor-result target-class="com.viki.brewer.dto.VendaOrigem">
+			<column name="ordem" class="java.lang.Integer"/>
+			<column name="mes" class="java.lang.String"/>
+			<column name="total_nacional" class="java.lang.Integer"/>
+			<column name="total_internacional" class="java.lang.Integer"/>
+		</constructor-result>
+	</sql-result-set-mapping>	
+	
+</entity-mappings>

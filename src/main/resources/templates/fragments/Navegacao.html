@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<th:block th:fragment="pager (pagina)">
+	<div class="col-sm-12 text-center" th:if="${not pagina.vazia}">
+		<ul class="pager" th:with="totalPaginas=${pagina.totalPaginas}">
+			<li th:class="${pagina.primeira} ? disabled" th:remove="${not pagina.navegavel} ? all">
+				<a th:href="${pagina.url(0)}" th:remove="${pagina.primeira} ? tag"><span>Primeira</span></a>
+			</li>
+			<li th:class="${pagina.primeira} ? disabled">
+				<a th:href="${pagina.url(pagina.atual - 1)}" th:remove="${pagina.primeira} ? tag"><span>Anterior</span></a>
+			</li>
+			<span style="font-weight: bold" th:text="${pagina.paginasLabel}"></span>
+			<li th:class="${pagina.ultima} ? disabled">
+				<a th:href="${pagina.url(pagina.atual + 1)}" th:remove="${pagina.ultima} ? tag"><span>Próxima</span></a>
+			</li>
+			<li th:class="${pagina.ultima} ? disabled" th:remove="${not pagina.navegavel} ? all">
+				<a th:href="${pagina.url(totalPaginas-1)}" th:remove="${pagina.ultima} ? tag"><span>Última</span></a>
+			</li>
+		</ul>
+	</div>
+</th:block>
+
+<th:block th:fragment="default (pagina)">
+	<div class="col-sm-12 text-center" th:if="${not pagina.vazia}">
+		<ul class="pagination">
+			<li th:class="${pagina.primeira} ? disabled" th:remove="${not pagina.navegavel} ? all">
+				<a th:href="${pagina.url(0)}" th:remove="${pagina.primeira} ? tag"><span>&lt;</span></a>
+			</li>
+			<li th:class="${pagina.primeira} ? disabled">
+				<a th:href="${pagina.url(pagina.atual - 1)}" th:remove="${pagina.primeira} ? tag"><span>&laquo;</span></a>
+			</li>
+			<th:block th:each="p : ${#numbers.sequence(1,pagina.totalPaginas)}" th:with="numeroPagina=${p-1}">
+				<li th:class="${pagina.atual == numeroPagina} ? active">
+					<a th:href="${pagina.url(numeroPagina)}"><span th:text="${p}"></span></a>
+				</li>
+			</th:block>
+			<li th:class="${pagina.ultima} ? disabled">
+				<a th:href="${pagina.url(pagina.atual + 1)}" th:remove="${pagina.ultima} ? tag"><span>&raquo;</span></a>
+			</li>
+			<li th:class="${pagina.ultima} ? disabled" th:remove="${not pagina.navegavel} ? all">
+				<a th:href="${pagina.url(pagina.totalPaginas-1)}" th:remove="${pagina.ultima} ? tag"><span>&gt;</span></a>
+			</li>
+		</ul>
+	</div>
+</th:block>
+
+<th:block th:fragment="pagination (pagina)">
+	<div class="col-sm-12  text-center" th:if="${not pagina.vazia}">
+		<nav>
+			<ul class="pagination" th:with="paginaAtual=${pagina.atual}">
+				<li th:class="${pagina.primeira} ? disabled">
+					<a th:href="${pagina.url(0)}" th:remove="${pagina.primeira} ? tag"><span>&lt;</span></a>
+				</li>
+				<li th:class="${pagina.primeira} ? disabled">
+					<a th:href="${pagina.url(pagina.atual-1)}" th:remove="${pagina.primeira} ? tag"><span>&laquo;</span></a>
+				</li>
+				<th:block th:each="p : ${#numbers.sequence(pagina.inicio, pagina.fim)}" th:with="numeroPagina=${p - 1}">
+					<li th:class="${paginaAtual == numeroPagina} ? active">
+						<a th:href="${pagina.url(numeroPagina)}"><span th:text="${p}"></span></a>
+					</li>
+				</th:block>
+				<li th:class="${pagina.ultima} ? disabled">
+					<a th:href="${pagina.url(paginaAtual + 1)}" th:remove="${pagina.ultima} ? tag"><span>&raquo;</span></a>
+				</li>
+				<li th:class="${pagina.ultima} ? disabled">
+					<a th:href="${pagina.url(pagina.totalPaginas-1)}" th:remove="${pagina.ultima} ? tag"><span>&gt;</span></a>
+				</li>
+                	                
+			</ul>
+		</nav>
+	</div>
+</th:block>
+	
+</html>

@@ -1,0 +1,1 @@
+alter table cliente alter column complemento type character varying(40);
