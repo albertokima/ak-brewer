@@ -112,7 +112,7 @@ public class Mailer {
 		String emailCliente = retornaEmailCliente(venda);
 
 		SimpleMailMessage message = new SimpleMailMessage();
-		message.setFrom("hiperjedi@gmail.com");
+		message.setFrom("username@gmail.com");
 		message.setTo(emailCliente);
 		message.setSubject(String.format("Brewer - Venda n° %d", venda.getCodigo()));
 		message.setText("Obrigado, sua venda foi processada!");
